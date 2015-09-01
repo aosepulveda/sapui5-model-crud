@@ -8,12 +8,11 @@
     data-sap-ui-libs="sap.m">
     </script>
     <script>
-        var app = new sap.m.App();
-        var page = new sap.m.Page({
-            title: "SAPUI5 Model CRUD"
-        });
-
-        app.addPage(page);
+        sap.ui.localResources("main");
+       	var app = new sap.m.App({initialPage:"idinicio1"});
+		var page = sap.ui.view({id:"idinicio1", viewName:"main.main", type:sap.ui.core.mvc.ViewType.JS});
+			
+		app.addPage(page);
 
         app.placeAt("content");
     </script>
