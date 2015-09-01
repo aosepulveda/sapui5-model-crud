@@ -45,12 +45,12 @@ sap.ui.jsview("main.main", {
 		var oButtonSave = new sap.m.Button({
 		    text: "Save",
 		    press: function(oEvent) {
-		        oController.handlePress();
+		        oController.save(oTextFieldFirstName.getValue(), oTextFieldLastName.getValue());
 		    }
 		});
 		oMatrix.createRow(oButtonSave);
 		
-		var oTableData = new sap.m.Table("tableData");
+		var oTableData = new sap.m.Table(this.createId("table"));
 		
 		var oFirstName = new sap.m.Text({text: "{firstName}"});  
 		var oLastName = new sap.m.Text({text: "{lastName}"});
@@ -64,9 +64,23 @@ sap.ui.jsview("main.main", {
 		oRow.addCell(oFirstName).addCell(oLastName);
 		
 		var oModel = new sap.ui.model.json.JSONModel();
-		oModel.setData({modelData: []});
+		oModel.setData({modelData: aData});
 		oTableData.setModel(oModel);
 		oTableData.bindItems("/modelData", oRow);
+		
+		oTableData.setMode(sap.m.ListMode.Delete);
+		oTableData.attachDelete(function(oEvent) {
+			var oSelectedItem = oEvent.getParameter("listItem");
+			var sItemName = oSelectedItem.getBindingContext().getProperty("firstName");
+			var path = oSelectedItem.getBindingContext().getPath();
+      		path = path.substring(path.lastIndexOf('/') +1);
+      		var model = oSelectedItem.getModel();
+      		var data = model.getProperty('/modelData');
+    		data.splice(parseInt(path), 1);
+      		model.setProperty('/modelData', data);
+			
+			sap.m.MessageToast.show("Deleted");
+		});
 		
 		oVerticalLayout.addContent(oTableData);
 		

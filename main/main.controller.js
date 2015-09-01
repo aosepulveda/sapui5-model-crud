@@ -34,9 +34,12 @@ sap.ui.controller("main.main", {
 //	onExit: function() {
 //
 //	}
-	handlePress: function() {
-		sap.m.MessageToast.show('Pressed!!!!', {
-	        duration: 200
-	      });
+	save: function(firstName, lastName) {
+	    // Add object to array
+	    aData.push({firstName: firstName, lastName: lastName});
+        
+        // Refresh model
+        var oTableData = sap.ui.getCore().byId(this.createId("table"));
+        oTableData.getModel().refresh();
 	}
 });
